@@ -1,0 +1,55 @@
+
+FOR HOME LAB
+
+.
+├── inventory
+│   └── hosts_vars
+│       └── hosts.ini
+├── roles
+│   └── docker
+│       └── tasks
+│           └── main.yml
+└── site.yml
+
+---------------------------------------------------
+
+PROJECT LAYOUTS: BASIC
+
+basic-project
+├── inventory
+│ ├── group_vars
+│ │ └── web.yml
+│ ├── host_vars
+│ │ └── db1.yml
+│ └── hosts
+└── site.yml
+
+---------------------------------------------------
+
+PROJECT LAYOUTS: ORGANIZATIONAL ROLES
+
+myapp
+├── roles
+│ ├── myapp
+│ │ ├── tasks
+│ │ │ └── main.yml
+│ │ └── ...
+│ ├── nginx
+│ │ └── ...
+│ └── proxy
+│ └── ...
+└── site.yml
+
+---------------------------------------------------
+
+PROJECT LAYOUTS: SHARED ROLES
+
+myapp
+├── config.yml
+├── provision.yml
+├── roles
+│ └── requirements.yml
+└── site.yml
+
+---------------------------------------------------
+

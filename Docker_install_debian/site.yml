@@ -1,0 +1,7 @@
+---
+- name: install docker on debian
+  hosts: all
+  remote_user: nik
+  roles:
+    - docker
+
