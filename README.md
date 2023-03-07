@@ -29,5 +29,27 @@ $ ansible-playbook --inventory ./inventory/hosts_vars/hosts.ini site.yml --ask-b
 
 ```
 
+## Add SSH key to target
+
+```bash
+
+# Generate SSH Key
+$ ssh-keygen
+> ... (add path and name of key and all)
+
+# copy .pub to target authorized_keys 
+$ ssh-copy-id -i <path_to_new_generated_key.pub> uname@<ip>
+
+# ADD ssh key in ansible hosts file
+# Example
+```yml
+
+[hosts-name]
+192.168.0.108 ansible_ssh_private_key_file=<path_to_privet-key>
 
 
+```
+
+Ezz ;)
+
+```
