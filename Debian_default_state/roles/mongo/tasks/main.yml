@@ -1,0 +1,68 @@
+---
+- name: install dependencies
+  become: yes
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: latest
+    update_cache: true
+
+- name: add gpg key mongodb
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-6.0.asc
+    state: present
+
+- name: add in repo
+  apt_repository:
+    repo: "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main"
+    state: present
+    filename: mongodb-org-6.0.list
+
+- name: apt update
+  apt:
+    update_cache: true
+
+- name: install mongo and all
+  apt:
+    name:
+      - mongodb-org
+    state: latest
+    update_cache: yes
+
+- name: add mongo to firewall
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - '27017'
+
+- name: enable mongo 
+  service:
+    name: mongod
+    enabled: yes
+
+- name: start mongo 
+  service:
+    name: mongod
+    state: started
+
+
+#  NEED TO INSTALL PYMONGO ON PYTHON2 SITE PACHAGES LOL :(
+
+# - name: create project01 database with user nik and password something
+#   mongodb_user:
+#     database: Project01
+#     name: nik
+#     password: passisword
+#     state: present
+
+# - name: define roles
+#   mongodb_user:
+#     database: Project01
+#     name: nik
+#     password: passisword
+#     roles: readWrite,dbAdmin,userAdmin
+#     state: present

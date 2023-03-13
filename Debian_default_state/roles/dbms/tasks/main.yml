@@ -1,0 +1,37 @@
+---
+- name: add my sql.deb to repo
+  become: yes
+  apt: 
+    deb: /tmp/mysql-apt-config_0.8.22-1_all.deb
+
+- name: updating pls
+  apt:
+    update_cache: true
+
+- name: install mysql
+  become: yes
+  apt:
+    name: 
+      - mysql-server
+    state: latest
+    update_cache: true
+
+- name: enable mysql service 
+  service:
+    name: mysql
+    enabled: yes
+
+- name: start mysql service
+  service:
+    name: mysql
+    state: started
+      
+- name: add mysql to firewall 
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop:
+    - '3306'
+    - mysql
+
+

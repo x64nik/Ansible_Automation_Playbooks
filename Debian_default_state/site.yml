@@ -1,0 +1,11 @@
+---
+- name: setup Debian server to its default use state 
+  become: yes
+  hosts: all
+  remote_user: nik
+  roles:
+    # - smb
+    # - docker
+    # - dbms
+    - mongo
+

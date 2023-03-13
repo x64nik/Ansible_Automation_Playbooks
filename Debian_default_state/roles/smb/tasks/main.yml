@@ -1,0 +1,44 @@
+--- 
+- name: install smb debian and also ufw
+  become: yes
+  apt:
+    name: 
+      - samba
+      - smbclient
+      - cifs-utils
+      - ufw
+      - net-tools
+    state: latest
+    update_cache: true
+
+- name: Create smb-share directory in /home
+  file:
+    path:
+      - /home/nik/smb-share
+    state: directory
+
+- name: add config to smb.conf
+  blockinfile:
+    path: /etc/samba/smb.conf
+    block: /
+      [smb-share]
+      comment = Home Server Debian SMB Share
+      path = /home/nik/smb-share
+      writeable = yes
+      browsable = yes
+      public = yes
+
+- name: enable smbd service 
+  service:
+    name: smbd
+    enabled: yes
+
+- name: start smbd service
+  service:
+    name: smbd
+    state: started
+      
+- name: add smb to firewall rules (ufw)
+  ufw:
+    rule: allow
+    name: samba
