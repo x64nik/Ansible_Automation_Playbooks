@@ -1,0 +1,52 @@
+#mongo
+---
+- name: update first
+  become: yes
+  dnf:
+    name: "*"
+    state: latest
+
+- name: create mongo db repo file
+  become: yes
+  file:
+    path: "/etc/yum.repos.d/mongodb.repo"
+    state: touch
+    mode: 0644
+    owner: root
+
+- name: add repo contents
+  blockinfile:
+    path: "/etc/yum.repos.d/mongodb.repo"
+    block: |
+      [mongodb-org-4.4] 
+      name=MongoDB Repository
+      baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.4/x86_64/
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://www.mongodb.org/static/pgp/server-4.4.asc
+
+
+- name: dnf install mongodb-org mongosh
+  become: yes
+  dnf:
+    name:
+      - mongodb-org
+      - mongosh
+    state: latest
+
+- name: systemctl enable mongod
+  become: yes
+  systemd:
+    name: mongod
+    enabled: true
+
+- name: start mongod service
+  become: yes
+  service:
+    name: mongod
+    state: started
+
+
+
+
+    

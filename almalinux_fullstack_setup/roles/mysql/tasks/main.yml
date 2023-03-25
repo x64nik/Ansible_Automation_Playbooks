@@ -1,0 +1,31 @@
+#mysql
+---
+- name: install mysql direct by dnf
+  become: yes
+  dnf:
+    name: 
+      - mysql
+    state: latest
+  
+- name: install mysql server 
+  become: yes
+  dnf:
+    name: 
+      - mysql-server
+    state: latest
+  
+- name: systemctl enable mysqld
+  become: yes
+  systemd:
+    name: mysqld
+    enabled: true
+
+- name: start mysqld service
+  become: yes
+  service: 
+    name: mysqld
+    state: started
+
+
+
+
