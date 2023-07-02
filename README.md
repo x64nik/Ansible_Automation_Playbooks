@@ -32,6 +32,24 @@ $ ansible-playbook --inventory ./inventory/hosts_vars/hosts.ini site.yml --ask-b
 
 ```
 
+
+
+```yml
+#define tags in playbooks site.yml
+  roles:
+    - {role: mysql, tags: ['db']}
+    - {role: mongo, tags: ['db']}
+    - {role: docker, tags: ['docker']}
+
+```
+
+```bash
+
+#tag based roles 
+ansible-playbook --inventory ./inventory/hosts_vars/hosts.ini site.yml --tags docker ... #<any tag>
+
+```
+
 ## Add SSH key to target
 
 ```bash
@@ -51,3 +69,5 @@ $ ssh-copy-id -i <path_to_new_generated_key.pub> uname@<ip>
 # Ezz ;)
 
 ```
+
+
