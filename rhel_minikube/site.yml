@@ -1,0 +1,9 @@
+---
+- name: setup alma VM for full stack dev
+  become: yes
+  hosts: all
+  remote_user: nik
+  roles:
+    - docker
+    - minikube
+  

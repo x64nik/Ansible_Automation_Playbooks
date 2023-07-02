@@ -1,0 +1,37 @@
+#docker
+- name: install utils 1st
+  dnf:
+    name: yum-utils
+    state: latest
+  
+- name: add repo to yum config manager
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: install docker
+  dnf:
+    name:
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin
+
+- name: systemctl enable docker
+  become: yes
+  systemd:
+    name: docker
+    enabled: true
+
+- name: start docker
+  become: yes
+  service:
+    name: docker
+    state: started
+
+- name: add docker to usr group
+  become: yes
+  user:
+    name: nik
+    uid: 1000
+    groups: docker
+
+

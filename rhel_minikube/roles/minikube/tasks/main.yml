@@ -1,0 +1,18 @@
+#minikube
+- name: download minikube-linux-amd64
+  get_url:
+    url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    dest: /opt/minikube-linux-amd64
+
+- name: install minikube-linux-amd64
+  become: yes
+  command: sudo install /opt/minikube-linux-amd64 /usr/local/bin/minikube
+
+# - name: start minikube
+#   become: yes
+#   command: /usr/local/bin/minikube start --driver docker
+
+
+
+
+

@@ -2,8 +2,8 @@
 - name: setup alma VM for full stack dev
   become: yes
   hosts: all
-  remote_user: fullstack
+  remote_user: nik
   roles:
-    - mysql 
-    - mongo
-    - docker
+    - {role: mysql, tags: ['db']}
+    - {role: mongo, tags: ['db']}
+    - {role: docker, tags: ['docker']}
