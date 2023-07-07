@@ -1,0 +1,116 @@
+---
+- name: Forwarding IPv4 and letting iptables see bridged traffic
+  copy:
+    dest: "/etc/modules-load.d/k8s.conf"
+    content: |
+      overlay
+      br_netfilter
+
+- name: modprobe
+  shell: |
+    sudo modprobe overlay
+    sudo modprobe br_netfilter
+
+- name: sysctl params required by setup, params persist across reboots
+  copy:
+    dest: "/etc/sysctl.d/k8s.conf"
+    content: |
+      net.bridge.bridge-nf-call-iptables  = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward                 = 1
+
+- name: Apply sysctl params without reboot
+  shell: sudo sysctl --system
+
+
+- name: install dnf-plugins-core
+  dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: add docker-ce repo
+  shell: sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: install containerd
+  dnf:
+    name: containerd.io
+    state: present
+
+- name: check containerd service
+  systemd:
+    name: containerd
+  register: containerd_status
+
+- debug:
+    var: containerd_status.status.ActiveState
+
+- name: Configuring the systemd cgroup driver
+  copy:
+    dest: /etc/containerd/config.toml
+    content: |
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+          SystemdCgroup = true
+
+- name: restart containerd
+  systemd:
+    name: containerd
+    daemon_reload: true
+    state: restarted
+
+- name: Installing kubeadm, kubelet and kubectl 
+  copy:
+    dest: /etc/yum.repos.d/kubernetes.repo
+    content: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+      exclude=kubelet kubeadm kubectl
+
+- name: Set SELinux in permissive mode (effectively disabling it)
+  shell: |
+    sudo setenforce 0
+    sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+
+- name: def install kubelet kubeadm kubectl
+  yum:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    disable_excludes: kubernetes
+    state: latest
+
+- name: enable kubelet
+  systemd:
+    name: kubelet
+    enabled: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+

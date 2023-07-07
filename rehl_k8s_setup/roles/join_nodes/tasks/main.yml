@@ -1,0 +1,36 @@
+---
+- name: test
+  debug:
+    msg: "{{ hostvars['K8S_TOKEN_HOLDER']['token'].stdout }}"
+
+- set_fact:
+    token: "{{ hostvars['K8S_TOKEN_HOLDER']['token'].stdout }}"
+
+- name: test2
+  debug:
+    msg: "{{ hostvars['K8S_TOKEN_HOLDER']['hash'].stdout}}"
+
+- set_fact:
+    hash: "{{ hostvars['K8S_TOKEN_HOLDER']['hash'].stdout }}"
+
+- set_fact:
+    master_ip: "{{ groups['master'][0] }}"
+
+- name: finally joining worker node to master node
+  shell: |
+    kubeadm join {{ master_ip }}:6443 --token {{ token }} --discovery-token-ca-cert-hash sha256:{{ hash }}
+  register: output_worker
+
+- name: Output of worker
+  debug:
+    msg: "{{ output_worker.stdout }}"
+
+- name: Final msg..
+  debug:
+    msg: 
+      Master and Worker nodes are setup HEHE :D ENJOY..
+
+
+
+
+

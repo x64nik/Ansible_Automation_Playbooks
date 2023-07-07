@@ -1,0 +1,42 @@
+---
+- name: k8 setup master
+  become: yes
+  hosts: master
+  remote_user: master
+  roles:
+    - kubeadm
+
+- name: k8 setup worker1
+  become: yes
+  hosts: agent1
+  remote_user: agent1
+  roles:
+    - kubeadm
+
+- name: k8 setup worker2
+  become: yes
+  hosts: agent2
+  remote_user: agent2
+  roles:
+    - kubeadm
+
+- name: k8 init only on master
+  become: yes
+  hosts: master
+  remote_user: master
+  roles:
+    - kubeadm_init
+
+- name: k8 setup token on worker1
+  become: yes
+  hosts: agent1
+  remote_user: agent1
+  roles:
+    - join_nodes
+
+- name: k8 setup token on worker2
+  become: yes
+  hosts: agent2
+  remote_user: agent2
+  roles:
+    - join_nodes
