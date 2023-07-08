@@ -41,3 +41,13 @@
     path: /home/master/.kube/config
     owner: master
     group: master
+
+- name: install weave on master only
+  remote_user: master
+  shell: |
+    runuser -u master -- kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+
+- name: add env IPALLOC_RANGE on weave 
+  remote_user: master
+  shell: 
+    runuser -u master -- kubectl set env ds -n kube-system weave-net IPALLOC_RANGE=10.244.0.0/16

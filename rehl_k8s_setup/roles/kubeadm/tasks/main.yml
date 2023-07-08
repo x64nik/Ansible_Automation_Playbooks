@@ -29,12 +29,21 @@
     state: present
 
 - name: add docker-ce repo
-  shell: sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+  shell: sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: update
+  shell: |
+    sudo dnf update 
 
 - name: install containerd
   dnf:
     name: containerd.io
     state: present
+
+- name: enable and start containerd service
+  shell: |
+    sudo systemctl enable containerd
+    sudo systemctl start containerd
 
 - name: check containerd service
   systemd:
@@ -64,7 +73,7 @@
     content: |
       [kubernetes]
       name=Kubernetes
-      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
       enabled=1
       gpgcheck=1
       gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
@@ -74,6 +83,7 @@
   shell: |
     sudo setenforce 0
     sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+    
 
 - name: def install kubelet kubeadm kubectl
   yum:
@@ -82,12 +92,12 @@
       - kubeadm
       - kubectl
     disable_excludes: kubernetes
-    state: latest
+    state: present
 
-- name: enable kubelet
-  systemd:
-    name: kubelet
-    enabled: true
+- name: enable and start kubelet service
+  shell: |
+    sudo systemctl enable --now kubelet
+    sudo systemctl start kubelet
 
 
 
