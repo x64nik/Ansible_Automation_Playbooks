@@ -65,7 +65,7 @@ $ ssh-copy-id -i <path_to_new_generated_key.pub> uname@<ip>
 [hosts-name]
 192.168.0.108 ansible_ssh_private_key_file=<path_to_privet-key>
 
-# Ezz ;)
+# Ezz ;)))
 
 ```
 
