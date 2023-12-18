@@ -8,15 +8,15 @@
 
 - name: k8 setup worker1
   become: yes
-  hosts: agent1
-  remote_user: agent1
+  hosts: worker1
+  remote_user: worker1
   roles:
     - kubeadm
 
 - name: k8 setup worker2
   become: yes
-  hosts: agent2
-  remote_user: agent2
+  hosts: worker2
+  remote_user: worker2
   roles:
     - kubeadm
 
@@ -29,14 +29,14 @@
 
 - name: k8 setup token on worker1
   become: yes
-  hosts: agent1
-  remote_user: agent1
+  hosts: worker1
+  remote_user: worker1
   roles:
     - join_nodes
 
 - name: k8 setup token on worker2
   become: yes
-  hosts: agent2
-  remote_user: agent2
+  hosts: worker2
+  remote_user: worker2
   roles:
     - join_nodes

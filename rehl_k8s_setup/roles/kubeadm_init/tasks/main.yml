@@ -51,3 +51,6 @@
   remote_user: master
   shell: 
     runuser -u master -- kubectl set env ds -n kube-system weave-net IPALLOC_RANGE=10.244.0.0/16
+
+
+

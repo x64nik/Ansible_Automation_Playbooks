@@ -38,3 +38,11 @@
     - docker-registry
     state: latest
     update_cache: true
+
+- name: adding docker to sudo
+  become: yes
+  shell: |
+    sudo chgrp docker $(which docker)
+    sudo chmod g+s $(which docker)
+
+  

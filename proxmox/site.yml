@@ -1,0 +1,10 @@
+---
+- name: cloudinit
+  hosts: test
+  remote_user: root
+  roles:
+    - cloudinit_vm
+  
+  vars: 
+    test: "ok test"
+  

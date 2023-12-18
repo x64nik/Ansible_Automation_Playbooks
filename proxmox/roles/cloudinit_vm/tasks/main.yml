@@ -1,0 +1,5 @@
+---
+- name: Creating cloudinit VM
+  # command: "sh /root/dev/scripts/createCloudInitVM-args.sh "
+  command: echo "{{ test }}"
+  
