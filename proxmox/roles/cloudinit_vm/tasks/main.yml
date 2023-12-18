@@ -1,5 +1,9 @@
 ---
 - name: Creating cloudinit VM
-  # command: "sh /root/dev/scripts/createCloudInitVM-args.sh "
-  command: echo "{{ test }}"
+  command: "sh /root/dev/scripts/createCloudInitVM-args.sh {{VMNAME}} {{VMID}} {{USERNAME}} {{PASSWORD}} {{IP}} {{QCOW_IMAGE}}"
+  register: output
+  debug: 
+    var: output.stdout
+
   
+
