@@ -1,0 +1,12 @@
+---
+VMNAME: "test-ansible"
+VMID: "1000"
+USERNAME: "test"
+PASSWORD: "password"
+IP: "192.168.1.123"
+QCOW_IMAGE: "almalinux9.qcow2"  
+
+# QCOW_IMAGE: "debian11.qcow2"  
+# QCOW_IMAGE: "fedora38.qcow2"
+# QCOW_IMAGE: "rocky9.qcow2"
+# QCOW_IMAGE: "ubuntuserver20.qcow2"
