@@ -5,5 +5,4 @@
   remote_user: nik
   roles:
     - docker
-    - minikube
   
